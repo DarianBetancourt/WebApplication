@@ -4,7 +4,7 @@ Web application for managing a contact list
 
 ## Project setup
 ```
-git clone https://github.com/isbeli/WebApplication.git
+git clone https://github.com/DarianBetancourt/WebApplication.git
 ```
 ```
 cd WebApplication

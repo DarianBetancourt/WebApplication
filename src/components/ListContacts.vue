@@ -1,5 +1,5 @@
 <template>
-    <div class="list-contacts container bg-white shadow pt-5">
+    <div class="list-contacts container bg-white shadow py-5">
         <div class="row mb-5 mx-3">
             <div class="col-6 text-start">
                 <span class="table-title">Listagem de contatos</span>
@@ -39,12 +39,15 @@
                 </tbody>
             </table>
         </div>
+        <stackContactsVue :contacts="contacts" class="stack"/>
+
     </div>  
 </template>
 
 <script>
     import Api from '../services/contacsResources'
     import Alert from '@/components/Alert.vue'
+    import stackContactsVue from './stackContacts.vue'
 
     export default {
         data (){
@@ -56,12 +59,15 @@
             mobile:"",
             email:"",
             alert:false,
-            msg:{text:"",type:""}
+            msg:{text:"",type:""},
+            stack:false,
+
           }
           
         },
         components: {
-            Alert
+            Alert,
+            stackContactsVue
         },
         methods :{
             deleteContact(id){
@@ -85,6 +91,23 @@
             list(){
                 Api.listContacts().then(response =>{ 
                     this.contacts = response.data
+                    if(this.contacts.length == 0){
+                        this.contacts=[
+                            {
+                                id:"1",
+                                name:"Darian Betancourt",
+                                mobile:"92988324857",
+                                email:"darianbetancourt8@gmail.com"
+                            },
+                            {
+                                id:"2",
+                                name:"Isbeli Ramirez",
+                                mobile:"92988324854",
+                                email:"isbeliramirez8@gmail.com"
+                            },
+
+                        ]
+                    }
                 }).catch(error => {
                     /* error getting contacts */
                     this.msg.text="erro ao obter contatos";
@@ -95,7 +118,11 @@
         },
         mounted() {
             this.list()
-        },  
+            console.log(screen.width)
+            if(screen.width <= 500){
+                this.stack=true;
+            }
+        }, 
     }
 </script>
 
@@ -133,7 +160,6 @@
         color: #495057 !important;
     }
     td.td-actions{
-        display: flex;
         gap: 10px;
     }
     td > a{
@@ -147,10 +173,37 @@
     .table > :not(caption) > * > *{
         border-bottom-width: 0px;
     }
+    .stack{
+            display: none;
+        }
     button{
         background-color: #4263EB;
         padding: 16px 24px;
         border-radius: 8px;
         border: 0px;
+    }
+   
+    @media (min-width:768px) and (max-width: 990px){
+        td, th {
+            font-size: 13px !important;
+        }
+    }
+    @media (min-width:570px) and (max-width: 767px){
+        td, th {
+            font-size: 8px !important;
+        }
+    }
+    @media (max-width: 570px){
+        td, th {
+            font-size: 7px !important;
+        }
+    }
+    @media (max-width: 500px){
+        .stack{
+            display: flex;
+        }
+        .table-responsive{
+            display: none;
+        }
     }
 </style>
